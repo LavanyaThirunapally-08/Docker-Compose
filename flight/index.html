@@ -1,0 +1,2878 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FlyGo - Flight Booking</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+
+        body {
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+
+        /* ================= HEADER ================= */
+
+        header {
+
+            background: #0b4f8a;
+
+            color: white;
+
+            padding: 18px 7%;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+
+        .logo {
+
+            font-size: 28px;
+
+            font-weight: bold;
+        }
+
+
+        .logo span {
+
+            color: #42a5f5;
+        }
+
+
+        nav {
+
+            display: flex;
+
+            gap: 28px;
+        }
+
+
+        nav a {
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 14px;
+        }
+
+
+        /* ================= HERO ================= */
+
+        .hero {
+
+            background:
+
+                linear-gradient(
+                    rgba(0, 50, 90, 0.60),
+                    rgba(0, 30, 60, 0.70)
+                ),
+
+                url(
+                    "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1600&q=80"
+                );
+
+            background-size: cover;
+
+            background-position: center;
+
+            padding: 75px 7% 100px;
+
+            color: white;
+        }
+
+
+        .hero h1 {
+
+            font-size: 43px;
+
+            margin-bottom: 12px;
+        }
+
+
+        .hero p {
+
+            font-size: 18px;
+
+            margin-bottom: 32px;
+        }
+
+
+        /* ================= SEARCH ================= */
+
+        .search-panel {
+
+            background: white;
+
+            color: #222;
+
+            border-radius: 14px;
+
+            padding: 22px;
+
+            max-width: 1200px;
+        }
+
+
+        .trip-type {
+
+            display: flex;
+
+            gap: 25px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .trip-type label {
+
+            cursor: pointer;
+
+            font-size: 14px;
+        }
+
+
+        .search-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                1fr
+                1fr
+                1fr
+                1fr
+                auto;
+
+            gap: 12px;
+        }
+
+
+        .field {
+
+            display: flex;
+
+            flex-direction: column;
+        }
+
+
+        .field label {
+
+            font-size: 11px;
+
+            color: #777;
+
+            margin-bottom: 6px;
+
+            font-weight: bold;
+        }
+
+
+        .field input,
+        .field select {
+
+            padding: 13px;
+
+            border: 1px solid #d8dee8;
+
+            border-radius: 7px;
+
+            outline: none;
+
+            font-size: 14px;
+
+            background: white;
+        }
+
+
+        .search-btn {
+
+            background: #ff6f00;
+
+            color: white;
+
+            border: none;
+
+            padding: 0 25px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            font-size: 14px;
+        }
+
+
+        .search-btn:hover {
+
+            background: #e65100;
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .container {
+
+            width: 86%;
+
+            max-width: 1250px;
+
+            margin: 35px auto;
+        }
+
+
+        .content {
+
+            display: grid;
+
+            grid-template-columns: 230px 1fr;
+
+            gap: 25px;
+        }
+
+
+        /* ================= FILTERS ================= */
+
+        .filters {
+
+            background: white;
+
+            padding: 22px;
+
+            border-radius: 10px;
+
+            height: fit-content;
+        }
+
+
+        .filters h3 {
+
+            margin-bottom: 22px;
+        }
+
+
+        .filter-group {
+
+            margin-bottom: 25px;
+        }
+
+
+        .filter-group h4 {
+
+            font-size: 14px;
+
+            margin-bottom: 12px;
+        }
+
+
+        .filter-group label {
+
+            display: block;
+
+            font-size: 13px;
+
+            margin: 10px 0;
+
+            color: #555;
+
+            cursor: pointer;
+        }
+
+
+        /* ================= RESULTS ================= */
+
+        .results-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 15px;
+        }
+
+
+        .results-header h2 {
+
+            font-size: 22px;
+        }
+
+
+        .sort {
+
+            padding: 9px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 6px;
+
+            background: white;
+        }
+
+
+        /* ================= FLIGHT CARD ================= */
+
+        .flight-card {
+
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 20px;
+
+            margin-bottom: 15px;
+
+            border: 1px solid #e5e7eb;
+
+            transition: 0.2s;
+        }
+
+
+        .flight-card:hover {
+
+            box-shadow:
+                0 6px 20px
+                rgba(0, 0, 0, 0.08);
+        }
+
+
+        .flight-main {
+
+            display: grid;
+
+            grid-template-columns:
+                1.4fr
+                1fr
+                1fr
+                1fr
+                1fr;
+
+            gap: 18px;
+
+            align-items: center;
+        }
+
+
+        .airline {
+
+            font-weight: bold;
+
+            font-size: 16px;
+        }
+
+
+        .airline-code {
+
+            font-size: 12px;
+
+            color: #777;
+
+            margin-top: 5px;
+        }
+
+
+        .flight-time {
+
+            font-size: 20px;
+
+            font-weight: bold;
+        }
+
+
+        .airport {
+
+            font-size: 12px;
+
+            color: #777;
+
+            margin-top: 4px;
+        }
+
+
+        .duration {
+
+            font-size: 13px;
+
+            color: #666;
+
+            text-align: center;
+        }
+
+
+        .route-line {
+
+            color: #2196f3;
+
+            margin-top: 5px;
+
+            text-align: center;
+        }
+
+
+        .price {
+
+            font-size: 20px;
+
+            font-weight: bold;
+        }
+
+
+        .price-label {
+
+            font-size: 11px;
+
+            color: #777;
+
+            margin-top: 4px;
+        }
+
+
+        .flight-details {
+
+            margin-top: 18px;
+
+            padding-top: 15px;
+
+            border-top: 1px solid #eee;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+
+        .tag {
+
+            display: inline-block;
+
+            background: #e3f2fd;
+
+            color: #1565c0;
+
+            padding: 5px 9px;
+
+            border-radius: 5px;
+
+            font-size: 11px;
+
+            margin-right: 5px;
+        }
+
+
+        .select-flight {
+
+            background: #0b4f8a;
+
+            color: white;
+
+            border: none;
+
+            padding: 11px 25px;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+
+        .select-flight:hover {
+
+            background: #073861;
+        }
+
+
+        /* ================= MODAL ================= */
+
+        .modal {
+
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                rgba(0, 0, 0, 0.65);
+
+            z-index: 1000;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 20px;
+        }
+
+
+        .modal-content {
+
+            background: white;
+
+            width: 850px;
+
+            max-width: 100%;
+
+            max-height: 92vh;
+
+            overflow-y: auto;
+
+            border-radius: 14px;
+
+            padding: 28px;
+        }
+
+
+        .modal-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+
+        .close {
+
+            font-size: 28px;
+
+            color: #777;
+
+            cursor: pointer;
+        }
+
+
+        /* ================= BOOKING FORM ================= */
+
+        .booking-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1.3fr
+                1fr;
+
+            gap: 25px;
+        }
+
+
+        .passenger-box {
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 10px;
+
+            padding: 20px;
+        }
+
+
+        .passenger-box h3 {
+
+            margin-bottom: 18px;
+        }
+
+
+        .form-row {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 12px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .form-field {
+
+            display: flex;
+
+            flex-direction: column;
+        }
+
+
+        .form-field label {
+
+            font-size: 12px;
+
+            margin-bottom: 5px;
+
+            color: #666;
+        }
+
+
+        .form-field input,
+        .form-field select {
+
+            padding: 11px;
+
+            border: 1px solid #d7dce2;
+
+            border-radius: 6px;
+
+            outline: none;
+        }
+
+
+        /* ================= SUMMARY ================= */
+
+        .summary {
+
+            background: #f7f9fc;
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+            height: fit-content;
+        }
+
+
+        .summary h3 {
+
+            margin-bottom: 18px;
+        }
+
+
+        .summary-row {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin: 12px 0;
+
+            font-size: 14px;
+        }
+
+
+        .summary-total {
+
+            border-top: 1px solid #ddd;
+
+            padding-top: 15px;
+
+            margin-top: 15px;
+
+            font-size: 19px;
+
+            font-weight: bold;
+        }
+
+
+        .confirm-btn {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            background: #2e7d32;
+
+            color: white;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            margin-top: 18px;
+        }
+
+
+        /* ================= CONFIRMATION ================= */
+
+        .confirmation {
+
+            display: none;
+
+            text-align: center;
+
+            padding: 25px;
+        }
+
+
+        .success {
+
+            font-size: 55px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .confirmation h2 {
+
+            color: #2e7d32;
+
+            margin-bottom: 10px;
+        }
+
+
+        .ticket {
+
+            background: #f5f7fa;
+
+            text-align: left;
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+            margin-top: 20px;
+
+            line-height: 1.9;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width: 1000px) {
+
+            .search-grid {
+
+                grid-template-columns:
+                    1fr
+                    1fr
+                    1fr;
+            }
+
+
+            .flight-main {
+
+                grid-template-columns:
+                    1fr
+                    1fr
+                    1fr;
+            }
+
+
+            .content {
+
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media(max-width: 700px) {
+
+            header {
+
+                padding: 15px 5%;
+            }
+
+
+            nav {
+
+                display: none;
+            }
+
+
+            .hero {
+
+                padding: 45px 5%;
+            }
+
+
+            .hero h1 {
+
+                font-size: 30px;
+            }
+
+
+            .search-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .container {
+
+                width: 92%;
+            }
+
+
+            .flight-main {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .booking-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .form-row {
+
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ======================================================
+     HEADER
+======================================================= -->
+
+<header>
+
+    <div class="logo">
+
+        Fly<span>Go</span>
+
+    </div>
+
+
+    <nav>
+
+        <a href="#">Flights</a>
+
+        <a href="#">My Trips</a>
+
+        <a href="#">Offers</a>
+
+        <a href="#">Support</a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- ======================================================
+     HERO
+======================================================= -->
+
+<section class="hero">
+
+    <h1>
+        Find Your Perfect Flight
+    </h1>
+
+
+    <p>
+        Search, compare and book flights at the best available fares.
+    </p>
+
+
+    <div class="search-panel">
+
+
+        <!-- TRIP TYPE -->
+
+        <div class="trip-type">
+
+            <label>
+
+                <input
+                    type="radio"
+                    name="tripType"
+                    value="oneway"
+                    checked
+                >
+
+                One Way
+
+            </label>
+
+
+            <label>
+
+                <input
+                    type="radio"
+                    name="tripType"
+                    value="roundtrip"
+                >
+
+                Round Trip
+
+            </label>
+
+        </div>
+
+
+
+        <!-- SEARCH FIELDS -->
+
+        <div class="search-grid">
+
+
+            <div class="field">
+
+                <label>
+                    FROM
+                </label>
+
+
+                <select id="fromAirport">
+
+                    <option value="HYD">
+                        Hyderabad (HYD)
+                    </option>
+
+                    <option value="BLR">
+                        Bengaluru (BLR)
+                    </option>
+
+                    <option value="MAA">
+                        Chennai (MAA)
+                    </option>
+
+                    <option value="BOM">
+                        Mumbai (BOM)
+                    </option>
+
+                    <option value="DEL">
+                        Delhi (DEL)
+                    </option>
+
+                    <option value="PNQ">
+                        Pune (PNQ)
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <div class="field">
+
+                <label>
+                    TO
+                </label>
+
+
+                <select id="toAirport">
+
+                    <option value="DEL">
+                        Delhi (DEL)
+                    </option>
+
+                    <option value="HYD">
+                        Hyderabad (HYD)
+                    </option>
+
+                    <option value="BLR">
+                        Bengaluru (BLR)
+                    </option>
+
+                    <option value="MAA">
+                        Chennai (MAA)
+                    </option>
+
+                    <option value="BOM">
+                        Mumbai (BOM)
+                    </option>
+
+                    <option value="PNQ">
+                        Pune (PNQ)
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <div class="field">
+
+                <label>
+                    DEPARTURE
+                </label>
+
+
+                <input
+                    type="date"
+                    id="departureDate"
+                >
+
+            </div>
+
+
+
+            <div class="field">
+
+                <label>
+                    RETURN
+                </label>
+
+
+                <input
+                    type="date"
+                    id="returnDate"
+                >
+
+            </div>
+
+
+
+            <div class="field">
+
+                <label>
+                    PASSENGERS
+                </label>
+
+
+                <select id="passengers">
+
+                    <option value="1">
+                        1 Passenger
+                    </option>
+
+                    <option value="2">
+                        2 Passengers
+                    </option>
+
+                    <option value="3">
+                        3 Passengers
+                    </option>
+
+                    <option value="4">
+                        4 Passengers
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <button
+                class="search-btn"
+                onclick="searchFlights()"
+            >
+                Search Flights
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     MAIN
+======================================================= -->
+
+<div class="container">
+
+
+    <div class="content">
+
+
+        <!-- FILTERS -->
+
+        <aside class="filters">
+
+            <h3>
+                Filter Flights
+            </h3>
+
+
+            <div class="filter-group">
+
+                <h4>
+                    Stops
+                </h4>
+
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="stop-filter"
+                        value="Non-stop"
+                    >
+
+                    Non-stop
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="stop-filter"
+                        value="1 Stop"
+                    >
+
+                    1 Stop
+
+                </label>
+
+            </div>
+
+
+
+            <div class="filter-group">
+
+                <h4>
+                    Airlines
+                </h4>
+
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="airline-filter"
+                        value="IndiGo"
+                    >
+
+                    IndiGo
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="airline-filter"
+                        value="Air India"
+                    >
+
+                    Air India
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="airline-filter"
+                        value="Vistara"
+                    >
+
+                    Vistara
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="airline-filter"
+                        value="Akasa Air"
+                    >
+
+                    Akasa Air
+
+                </label>
+
+            </div>
+
+
+
+            <div class="filter-group">
+
+                <h4>
+                    Departure
+                </h4>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="departureTime"
+                        value="morning"
+                        onchange="applyFilters()"
+                    >
+
+                    Morning
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="departureTime"
+                        value="afternoon"
+                        onchange="applyFilters()"
+                    >
+
+                    Afternoon
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="departureTime"
+                        value="evening"
+                        onchange="applyFilters()"
+                    >
+
+                    Evening
+
+                </label>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- RESULTS -->
+
+        <main>
+
+            <div class="results-header">
+
+                <h2 id="resultsTitle">
+                    Available Flights
+                </h2>
+
+
+                <select
+                    class="sort"
+                    onchange="sortFlights(this.value)"
+                >
+
+                    <option value="default">
+                        Sort By
+                    </option>
+
+                    <option value="price">
+                        Lowest Price
+                    </option>
+
+                    <option value="duration">
+                        Shortest Duration
+                    </option>
+
+                    <option value="departure">
+                        Earliest Departure
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div id="flightResults"></div>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+
+<!-- ======================================================
+     BOOKING MODAL
+======================================================= -->
+
+<div
+    class="modal"
+    id="bookingModal"
+>
+
+
+    <div class="modal-content">
+
+
+        <div class="modal-header">
+
+            <h2>
+                Complete Your Booking
+            </h2>
+
+
+            <span
+                class="close"
+                onclick="closeModal()"
+            >
+                &times;
+            </span>
+
+        </div>
+
+
+
+        <div class="booking-grid">
+
+
+            <!-- PASSENGER FORM -->
+
+            <div class="passenger-box">
+
+                <h3>
+                    Passenger Details
+                </h3>
+
+
+                <div class="form-row">
+
+
+                    <div class="form-field">
+
+                        <label>
+                            First Name
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="firstName"
+                            placeholder="First name"
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label>
+                            Last Name
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="lastName"
+                            placeholder="Last name"
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="form-row">
+
+
+                    <div class="form-field">
+
+                        <label>
+                            Email
+                        </label>
+
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="you@example.com"
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label>
+                            Phone
+                        </label>
+
+
+                        <input
+                            type="tel"
+                            id="phone"
+                            placeholder="+91"
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="form-row">
+
+
+                    <div class="form-field">
+
+                        <label>
+                            Gender
+                        </label>
+
+
+                        <select id="gender">
+
+                            <option value="">
+                                Select
+                            </option>
+
+                            <option value="Male">
+                                Male
+                            </option>
+
+                            <option value="Female">
+                                Female
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label>
+                            Cabin
+                        </label>
+
+
+                        <select id="cabin">
+
+                            <option value="Economy">
+                                Economy
+                            </option>
+
+                            <option value="Premium Economy">
+                                Premium Economy
+                            </option>
+
+                            <option value="Business">
+                                Business
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SUMMARY -->
+
+            <div class="summary">
+
+                <h3>
+                    Fare Summary
+                </h3>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Flight
+                    </span>
+
+                    <strong id="summaryAirline">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Route
+                    </span>
+
+                    <strong id="summaryRoute">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Passengers
+                    </span>
+
+                    <strong id="summaryPassengers">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Base Fare
+                    </span>
+
+                    <strong id="baseFare">
+                        ₹0
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Taxes & Fees
+                    </span>
+
+                    <strong id="taxes">
+                        ₹0
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row summary-total">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong id="totalFare">
+                        ₹0
+                    </strong>
+
+                </div>
+
+
+                <button
+                    class="confirm-btn"
+                    onclick="confirmBooking()"
+                >
+                    Confirm & Book
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- CONFIRMATION -->
+
+        <div
+            class="confirmation"
+            id="confirmation"
+        >
+
+            <div class="success">
+                ✈️
+            </div>
+
+
+            <h2>
+                Booking Confirmed!
+            </h2>
+
+
+            <p>
+                Your flight has been successfully booked.
+            </p>
+
+
+            <div
+                class="ticket"
+                id="ticketDetails"
+            ></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+
+/* =========================================================
+   FLIGHT DATA
+========================================================= */
+
+const flightData = [
+
+    {
+        id: 1,
+
+        airline: "IndiGo",
+
+        code: "6E 2045",
+
+        from: "HYD",
+
+        to: "DEL",
+
+        departure: "06:15",
+
+        arrival: "08:35",
+
+        duration: 140,
+
+        durationText: "2h 20m",
+
+        stops: "Non-stop",
+
+        price: 5299
+    },
+
+
+    {
+        id: 2,
+
+        airline: "Air India",
+
+        code: "AI 840",
+
+        from: "HYD",
+
+        to: "DEL",
+
+        departure: "09:20",
+
+        arrival: "11:50",
+
+        duration: 150,
+
+        durationText: "2h 30m",
+
+        stops: "Non-stop",
+
+        price: 5899
+    },
+
+
+    {
+        id: 3,
+
+        airline: "Vistara",
+
+        code: "UK 873",
+
+        from: "HYD",
+
+        to: "DEL",
+
+        departure: "13:30",
+
+        arrival: "16:05",
+
+        duration: 155,
+
+        durationText: "2h 35m",
+
+        stops: "Non-stop",
+
+        price: 6499
+    },
+
+
+    {
+        id: 4,
+
+        airline: "Akasa Air",
+
+        code: "QP 1402",
+
+        from: "HYD",
+
+        to: "BLR",
+
+        departure: "07:10",
+
+        arrival: "08:35",
+
+        duration: 85,
+
+        durationText: "1h 25m",
+
+        stops: "Non-stop",
+
+        price: 3299
+    },
+
+
+    {
+        id: 5,
+
+        airline: "IndiGo",
+
+        code: "6E 532",
+
+        from: "HYD",
+
+        to: "BLR",
+
+        departure: "11:40",
+
+        arrival: "13:10",
+
+        duration: 90,
+
+        durationText: "1h 30m",
+
+        stops: "Non-stop",
+
+        price: 3499
+    },
+
+
+    {
+        id: 6,
+
+        airline: "Air India",
+
+        code: "AI 2875",
+
+        from: "HYD",
+
+        to: "BLR",
+
+        departure: "17:45",
+
+        arrival: "19:25",
+
+        duration: 100,
+
+        durationText: "1h 40m",
+
+        stops: "Non-stop",
+
+        price: 3899
+    },
+
+
+    {
+        id: 7,
+
+        airline: "IndiGo",
+
+        code: "6E 6913",
+
+        from: "BOM",
+
+        to: "DEL",
+
+        departure: "08:30",
+
+        arrival: "10:40",
+
+        duration: 130,
+
+        durationText: "2h 10m",
+
+        stops: "Non-stop",
+
+        price: 4799
+    },
+
+
+    {
+        id: 8,
+
+        airline: "Vistara",
+
+        code: "UK 954",
+
+        from: "BOM",
+
+        to: "DEL",
+
+        departure: "18:15",
+
+        arrival: "20:25",
+
+        duration: 130,
+
+        durationText: "2h 10m",
+
+        stops: "Non-stop",
+
+        price: 6199
+    }
+
+];
+
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+let currentFlights = [];
+
+let selectedFlight = null;
+
+let passengerCount = 1;
+
+
+
+/* =========================================================
+   DEFAULT DATE
+========================================================= */
+
+const today = new Date();
+
+const todayString =
+    today.toISOString().split("T")[0];
+
+
+document.getElementById(
+    "departureDate"
+).value = todayString;
+
+
+document.getElementById(
+    "departureDate"
+).min = todayString;
+
+
+document.getElementById(
+    "returnDate"
+).min = todayString;
+
+
+
+/* =========================================================
+   TRIP TYPE
+========================================================= */
+
+document
+    .querySelectorAll(
+        'input[name="tripType"]'
+    )
+    .forEach(
+        radio => {
+
+            radio.addEventListener(
+                "change",
+                function() {
+
+                    const returnDate =
+                        document.getElementById(
+                            "returnDate"
+                        );
+
+                    if (
+                        this.value ===
+                        "oneway"
+                    ) {
+
+                        returnDate.disabled =
+                            true;
+
+                        returnDate.value =
+                            "";
+
+                    }
+
+                    else {
+
+                        returnDate.disabled =
+                            false;
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+
+document.getElementById(
+    "returnDate"
+).disabled = true;
+
+
+
+/* =========================================================
+   SEARCH FLIGHTS
+========================================================= */
+
+function searchFlights() {
+
+    const from =
+        document.getElementById(
+            "fromAirport"
+        ).value;
+
+
+    const to =
+        document.getElementById(
+            "toAirport"
+        ).value;
+
+
+    passengerCount =
+        Number(
+            document.getElementById(
+                "passengers"
+            ).value
+        );
+
+
+    if (from === to) {
+
+        alert(
+            "Departure and arrival airports cannot be the same."
+        );
+
+        return;
+    }
+
+
+    currentFlights =
+        flightData.filter(
+
+            flight =>
+
+                flight.from === from &&
+                flight.to === to
+
+        );
+
+
+    /*
+       Generate demo flights
+       when route doesn't exist.
+    */
+
+    if (
+        currentFlights.length === 0
+    ) {
+
+        currentFlights =
+            generateDynamicFlights(
+                from,
+                to
+            );
+
+    }
+
+
+    renderFlights();
+
+}
+
+
+
+/* =========================================================
+   GENERATE DYNAMIC FLIGHTS
+========================================================= */
+
+function generateDynamicFlights(
+    from,
+    to
+) {
+
+    const airlines = [
+
+        "IndiGo",
+        "Air India",
+        "Vistara",
+        "Akasa Air"
+
+    ];
+
+
+    const generated = [];
+
+
+    airlines.forEach(
+        (airline, index) => {
+
+            const departureHour =
+                6 + index * 3;
+
+
+            const duration =
+                90 +
+                Math.floor(
+                    Math.random() * 100
+                );
+
+
+            const price =
+                2999 +
+                Math.floor(
+                    Math.random() * 4000
+                );
+
+
+            generated.push({
+
+                id:
+                    Date.now() +
+                    index,
+
+                airline:
+                    airline,
+
+                code:
+                    airline
+                        .substring(0, 2)
+                        .toUpperCase()
+                    + " "
+                    + Math.floor(
+                        1000 +
+                        Math.random() * 8999
+                    ),
+
+                from:
+                    from,
+
+                to:
+                    to,
+
+                departure:
+                    `${String(
+                        departureHour
+                    ).padStart(2, "0")}:00`,
+
+                arrival:
+                    calculateArrival(
+                        departureHour,
+                        duration
+                    ),
+
+                duration:
+                    duration,
+
+                durationText:
+                    `${Math.floor(
+                        duration / 60
+                    )}h ${
+                        duration % 60
+                    }m`,
+
+                stops:
+                    index === 3
+                        ? "1 Stop"
+                        : "Non-stop",
+
+                price:
+                    price
+
+            });
+
+        }
+    );
+
+
+    return generated;
+
+}
+
+
+
+/* =========================================================
+   ARRIVAL TIME
+========================================================= */
+
+function calculateArrival(
+    departureHour,
+    duration
+) {
+
+    const totalMinutes =
+        departureHour * 60 +
+        duration;
+
+
+    const hour =
+        Math.floor(
+            totalMinutes / 60
+        ) % 24;
+
+
+    const minute =
+        totalMinutes % 60;
+
+
+    return `${String(hour).padStart(2, "0")}:${String(
+        minute
+    ).padStart(2, "0")}`;
+
+}
+
+
+
+/* =========================================================
+   RENDER FLIGHTS
+========================================================= */
+
+function renderFlights() {
+
+    const container =
+        document.getElementById(
+            "flightResults"
+        );
+
+
+    container.innerHTML = "";
+
+
+    document.getElementById(
+        "resultsTitle"
+    ).innerText =
+        `${currentFlights.length} Flights Available`;
+
+
+    if (
+        currentFlights.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="flight-card">
+
+                <h3>
+                    No flights found
+                </h3>
+
+                <p>
+                    Try another route.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    currentFlights.forEach(
+        flight => {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "flight-card";
+
+
+            card.innerHTML = `
+
+                <div class="flight-main">
+
+
+                    <div>
+
+                        <div class="airline">
+                            ${flight.airline}
+                        </div>
+
+                        <div class="airline-code">
+                            ${flight.code}
+                        </div>
+
+                    </div>
+
+
+
+                    <div>
+
+                        <div class="flight-time">
+                            ${flight.departure}
+                        </div>
+
+                        <div class="airport">
+                            ${flight.from}
+                        </div>
+
+                    </div>
+
+
+
+                    <div>
+
+                        <div class="duration">
+                            ${flight.durationText}
+                        </div>
+
+                        <div class="route-line">
+                            ───── ✈ ─────
+                        </div>
+
+                        <div
+                            class="duration"
+                        >
+                            ${flight.stops}
+                        </div>
+
+                    </div>
+
+
+
+                    <div>
+
+                        <div class="flight-time">
+                            ${flight.arrival}
+                        </div>
+
+                        <div class="airport">
+                            ${flight.to}
+                        </div>
+
+                    </div>
+
+
+
+                    <div>
+
+                        <div class="price">
+                            ₹${flight.price.toLocaleString("en-IN")}
+                        </div>
+
+                        <div class="price-label">
+                            per passenger
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="flight-details">
+
+                    <div>
+
+                        <span class="tag">
+                            ${flight.stops}
+                        </span>
+
+                        <span class="tag">
+                            Economy
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        class="select-flight"
+                        onclick="selectFlight(${flight.id})"
+                    >
+                        Select Flight
+                    </button>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(card);
+
+        }
+    );
+
+}
+
+
+
+/* =========================================================
+   FILTERS
+========================================================= */
+
+document
+    .querySelectorAll(
+        ".stop-filter, .airline-filter"
+    )
+    .forEach(
+        checkbox => {
+
+            checkbox.addEventListener(
+                "change",
+                applyFilters
+            );
+
+        }
+    );
+
+
+
+function applyFilters() {
+
+    const stops =
+        [
+            ...document.querySelectorAll(
+                ".stop-filter:checked"
+            )
+        ].map(
+            item =>
+                item.value
+        );
+
+
+    const airlines =
+        [
+            ...document.querySelectorAll(
+                ".airline-filter:checked"
+            )
+        ].map(
+            item =>
+                item.value
+        );
+
+
+    const departure =
+        document.querySelector(
+            'input[name="departureTime"]:checked'
+        )?.value;
+
+
+    let filtered =
+        [...currentFlights];
+
+
+    if (stops.length) {
+
+        filtered =
+            filtered.filter(
+                flight =>
+                    stops.includes(
+                        flight.stops
+                    )
+            );
+
+    }
+
+
+    if (airlines.length) {
+
+        filtered =
+            filtered.filter(
+                flight =>
+                    airlines.includes(
+                        flight.airline
+                    )
+            );
+
+    }
+
+
+    if (departure) {
+
+        filtered =
+            filtered.filter(
+                flight => {
+
+                    const hour =
+                        Number(
+                            flight.departure
+                                .split(":")[0]
+                        );
+
+
+                    if (
+                        departure ===
+                        "morning"
+                    ) {
+
+                        return (
+                            hour >= 5 &&
+                            hour < 12
+                        );
+
+                    }
+
+
+                    if (
+                        departure ===
+                        "afternoon"
+                    ) {
+
+                        return (
+                            hour >= 12 &&
+                            hour < 17
+                        );
+
+                    }
+
+
+                    return (
+                        hour >= 17 ||
+                        hour < 5
+                    );
+
+                }
+            );
+
+    }
+
+
+    renderFilteredFlights(
+        filtered
+    );
+
+}
+
+
+
+/* =========================================================
+   FILTERED RESULTS
+========================================================= */
+
+function renderFilteredFlights(
+    flights
+) {
+
+    const original =
+        currentFlights;
+
+
+    currentFlights =
+        flights;
+
+
+    renderFlights();
+
+
+    currentFlights =
+        original;
+
+}
+
+
+
+/* =========================================================
+   SORT
+========================================================= */
+
+function sortFlights(type) {
+
+    if (
+        type === "price"
+    ) {
+
+        currentFlights.sort(
+            (a, b) =>
+                a.price -
+                b.price
+        );
+
+    }
+
+
+    if (
+        type === "duration"
+    ) {
+
+        currentFlights.sort(
+            (a, b) =>
+                a.duration -
+                b.duration
+        );
+
+    }
+
+
+    if (
+        type === "departure"
+    ) {
+
+        currentFlights.sort(
+            (a, b) =>
+                a.departure.localeCompare(
+                    b.departure
+                )
+        );
+
+    }
+
+
+    renderFlights();
+
+}
+
+
+
+/* =========================================================
+   SELECT FLIGHT
+========================================================= */
+
+function selectFlight(
+    flightId
+) {
+
+    selectedFlight =
+        flightData.find(
+            flight =>
+                flight.id ===
+                flightId
+        );
+
+
+    /*
+       Dynamic route flights
+       are not necessarily in flightData.
+    */
+
+    if (!selectedFlight) {
+
+        selectedFlight =
+            currentFlights.find(
+                flight =>
+                    flight.id ===
+                    flightId
+            );
+
+    }
+
+
+    if (!selectedFlight) {
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "summaryAirline"
+    ).innerText =
+        `${selectedFlight.airline} ${selectedFlight.code}`;
+
+
+    document.getElementById(
+        "summaryRoute"
+    ).innerText =
+        `${selectedFlight.from} → ${selectedFlight.to}`;
+
+
+    document.getElementById(
+        "summaryPassengers"
+    ).innerText =
+        passengerCount;
+
+
+    calculateFare();
+
+
+    document.getElementById(
+        "bookingModal"
+    ).style.display =
+        "flex";
+
+}
+
+
+
+/* =========================================================
+   CALCULATE FARE
+========================================================= */
+
+function calculateFare() {
+
+    if (!selectedFlight) {
+
+        return;
+
+    }
+
+
+    const base =
+        selectedFlight.price *
+        passengerCount;
+
+
+    const tax =
+        Math.round(
+            base * 0.18
+        );
+
+
+    const total =
+        base + tax;
+
+
+    document.getElementById(
+        "baseFare"
+    ).innerText =
+        `₹${base.toLocaleString("en-IN")}`;
+
+
+    document.getElementById(
+        "taxes"
+    ).innerText =
+        `₹${tax.toLocaleString("en-IN")}`;
+
+
+    document.getElementById(
+        "totalFare"
+    ).innerText =
+        `₹${total.toLocaleString("en-IN")}`;
+
+}
+
+
+
+/* =========================================================
+   CONFIRM BOOKING
+========================================================= */
+
+function confirmBooking() {
+
+    const firstName =
+        document.getElementById(
+            "firstName"
+        ).value.trim();
+
+
+    const lastName =
+        document.getElementById(
+            "lastName"
+        ).value.trim();
+
+
+    const email =
+        document.getElementById(
+            "email"
+        ).value.trim();
+
+
+    const phone =
+        document.getElementById(
+            "phone"
+        ).value.trim();
+
+
+    const gender =
+        document.getElementById(
+            "gender"
+        ).value;
+
+
+    if (
+        !firstName ||
+        !lastName ||
+        !email ||
+        !phone ||
+        !gender
+    ) {
+
+        alert(
+            "Please fill all passenger details."
+        );
+
+        return;
+
+    }
+
+
+    const bookingId =
+        "FG" +
+        Math.floor(
+            100000 +
+            Math.random() *
+            900000
+        );
+
+
+    const base =
+        selectedFlight.price *
+        passengerCount;
+
+
+    const tax =
+        Math.round(
+            base * 0.18
+        );
+
+
+    const total =
+        base + tax;
+
+
+    const booking = {
+
+        bookingId,
+
+        passenger:
+            `${firstName} ${lastName}`,
+
+        email,
+
+        phone,
+
+        airline:
+            selectedFlight.airline,
+
+        flight:
+            selectedFlight.code,
+
+        from:
+            selectedFlight.from,
+
+        to:
+            selectedFlight.to,
+
+        departure:
+            selectedFlight.departure,
+
+        arrival:
+            selectedFlight.arrival,
+
+        passengers:
+            passengerCount,
+
+        total
+
+    };
+
+
+    localStorage.setItem(
+        "lastFlightBooking",
+        JSON.stringify(
+            booking
+        )
+    );
+
+
+    document.getElementById(
+        "confirmation"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "ticketDetails"
+    ).innerHTML = `
+
+        <p>
+            <strong>Booking ID:</strong>
+            ${bookingId}
+        </p>
+
+        <p>
+            <strong>Passenger:</strong>
+            ${firstName}
+            ${lastName}
+        </p>
+
+        <p>
+            <strong>Flight:</strong>
+            ${selectedFlight.airline}
+            ${selectedFlight.code}
+        </p>
+
+        <p>
+            <strong>Route:</strong>
+            ${selectedFlight.from}
+            →
+            ${selectedFlight.to}
+        </p>
+
+        <p>
+            <strong>Departure:</strong>
+            ${selectedFlight.departure}
+        </p>
+
+        <p>
+            <strong>Arrival:</strong>
+            ${selectedFlight.arrival}
+        </p>
+
+        <p>
+            <strong>Passengers:</strong>
+            ${passengerCount}
+        </p>
+
+        <p>
+            <strong>Total Paid:</strong>
+            ₹${total.toLocaleString("en-IN")}
+        </p>
+
+    `;
+
+}
+
+
+
+/* =========================================================
+   CLOSE MODAL
+========================================================= */
+
+function closeModal() {
+
+    document.getElementById(
+        "bookingModal"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "confirmation"
+    ).style.display =
+        "none";
+
+}
+
+
+
+/* =========================================================
+   INITIAL SEARCH
+========================================================= */
+
+searchFlights();
+
+</script>
+
+
+</body>
+
+</html>
